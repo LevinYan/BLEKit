@@ -7,18 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD911E34B37D00C20189 /* ScanViewController.m */; };
 		53DA39321E30975E00BFE477 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39281E30975E00BFE477 /* AppDelegate.m */; };
 		53DA39331E30975E00BFE477 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53DA39291E30975E00BFE477 /* Assets.xcassets */; };
 		53DA39341E30975E00BFE477 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DA392A1E30975E00BFE477 /* LaunchScreen.storyboard */; };
 		53DA39351E30975E00BFE477 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DA392C1E30975E00BFE477 /* Main.storyboard */; };
 		53DA39371E30975E00BFE477 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA392F1E30975E00BFE477 /* main.m */; };
-		53DA39381E30975E00BFE477 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39311E30975E00BFE477 /* ViewController.m */; };
 		53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */; };
 		53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393D1E30AE4600BFE477 /* BLEManager.m */; };
 		53DA39411E30DAA800BFE477 /* BLEUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39401E30DAA800BFE477 /* BLEUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5378CD901E34B37D00C20189 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
+		5378CD911E34B37D00C20189 /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
 		53DA390C1E30969D00BFE477 /* BLEKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53DA39271E30975E00BFE477 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		53DA39281E30975E00BFE477 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -27,8 +29,6 @@
 		53DA392D1E30975E00BFE477 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		53DA392E1E30975E00BFE477 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53DA392F1E30975E00BFE477 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		53DA39301E30975E00BFE477 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		53DA39311E30975E00BFE477 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		53DA39391E309A9B00BFE477 /* BLEPeripheral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheral.h; sourceTree = "<group>"; };
 		53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheral.m; sourceTree = "<group>"; };
 		53DA393C1E30AE4600BFE477 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEManager.h; sourceTree = "<group>"; };
@@ -88,8 +88,8 @@
 				53DA392C1E30975E00BFE477 /* Main.storyboard */,
 				53DA392E1E30975E00BFE477 /* Info.plist */,
 				53DA392F1E30975E00BFE477 /* main.m */,
-				53DA39301E30975E00BFE477 /* ViewController.h */,
-				53DA39311E30975E00BFE477 /* ViewController.m */,
+				5378CD901E34B37D00C20189 /* ScanViewController.h */,
+				5378CD911E34B37D00C20189 /* ScanViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -125,6 +125,7 @@
 				TargetAttributes = {
 					53DA390B1E30969D00BFE477 = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = X3TFC4EBWV;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -165,8 +166,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53DA39381E30975E00BFE477 /* ViewController.m in Sources */,
 				53DA39411E30DAA800BFE477 /* BLEUtil.m in Sources */,
+				5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */,
 				53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */,
 				53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */,
 				53DA39371E30975E00BFE477 /* main.m in Sources */,
@@ -288,7 +289,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X3TFC4EBWV;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LevinYan.BLEKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -299,7 +302,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X3TFC4EBWV;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LevinYan.BLEKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -325,6 +330,7 @@
 				53DA39251E30969D00BFE477 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

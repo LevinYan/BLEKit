@@ -11,13 +11,13 @@
 
 @implementation BLEUtil
 
-- (CBService*)makeService:(NSString*)uuid
-{
-    
-}
-
-- (CBCharacteristic*)makeCharacteristic:(NSString*)uuid
-{
-    
-}
+//- (CBService*)makeService:(NSString*)uuid
+//{
+//    
+//}
+//
+//- (CBCharacteristic*)makeCharacteristic:(NSString*)uuid
+//{
+//    
+//}
 @end

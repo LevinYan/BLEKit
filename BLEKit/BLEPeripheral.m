@@ -11,7 +11,6 @@
 
 @interface BLEPeripheral()
 
-@property (nonatomic, strong) CBPeripheral* peripheral;
 
 @end
 
