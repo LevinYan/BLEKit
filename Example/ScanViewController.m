@@ -21,22 +21,14 @@
     
     self.bleManager = [BLEManager shareManager];
     
-    __weak typeof(self) wself = self;
-    [self.bleManager initCentral:^{
-        [wself scanPeripherals];
-    }];
-    
-   
-
-}
-
-- (void)scanPeripherals
-{
+    [self.bleManager initCentral:nil];
     __weak typeof(self) wself = self;
     [self.bleManager scanForPeripherals:nil result:^(CBPeripheral *peripheral) {
         [wself.tableView reloadData];
     }];
+
 }
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +55,7 @@
     UILabel *rssi = cell.contentView.subviews.lastObject;
     
     BLEPeripheral *p = [BLEManager shareManager].discoveredPeripherals[indexPath.row];
-    name.text = p.peripheral.name ?: @"Unknow";
+    name.text = p.name ?: @"Unknow";
     rssi.text = [NSString stringWithFormat:@"%@", p.scanRSSI];
     
     return cell;

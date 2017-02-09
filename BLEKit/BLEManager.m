@@ -11,12 +11,21 @@
 
 
 
+@interface BLEPeripheral(BLEManager)
+
+@property (nonatomic, strong) CBPeripheral *peripheral;
++ (instancetype)Peripheral:(CBPeripheral*)peripheral;
+
+@end
+
+
 @interface BLEManager()<CBCentralManagerDelegate, CBPeripheralDelegate>
 
 @property (nonatomic, assign) BLEManagerState state;
+@property (nonatomic, assign) BLEManagerScanState scanState;
+@property (nonatomic, strong) BLEPeripheralScanOption *scanOption;
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, copy) ScanResult scanResult;
-@property (nonatomic, strong) NSMutableDictionary<NSString*, ConnectComplete> *connectCompletes;
 @property (nonatomic, copy) InitCentralComplete initCentralComplete;
 @end
 
@@ -34,34 +43,41 @@
 - (instancetype)init
 {
     self = [super init];
-    
+    _state = BLEManagerStateUnknown;
     _discoveredPeripherals = [NSMutableArray array];
-    
     return self;
 
 }
 - (void)initCentral:(InitCentralComplete)complete
 {
     
-    _centralManager = [[CBCentralManager alloc] init];
-    _centralManager.delegate = self;
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     _initCentralComplete = complete;
     
 }
-- (void)scanForPeripherals:(BLEScanPeripheralOption *)option result:(ScanResult)result
+- (void)scanForPeripherals:(BLEPeripheralScanOption *)option result:(ScanResult)result
 {
-    
+    self.scanState = BLEManagerScanWaiting;
     self.scanResult = result;
-    [self.centralManager scanForPeripheralsWithServices:option.serviceUUIDs options:@{CBCentralManagerScanOptionAllowDuplicatesKey : @(option.allowDuplicate)}];
     
+}
+- (void)checkToScan
+{
+    if(self.state == BLEManagerStatePoweredOn && self.scanState == BLEManagerScanWaiting){
+        [self.centralManager scanForPeripheralsWithServices:self.scanOption.serviceUUIDs options:@{CBCentralManagerScanOptionAllowDuplicatesKey : @(self.scanOption.allowDuplicate)}];
+        self.scanState = BLEManagerScaning;
+        return;
+    }
+
 }
 
 - (void)stopScan
 {
     [self.centralManager stopScan];
+    self.scanState = BLEManagerScanStoped;
 }
 
-- (void)connectPeripheral:(CBPeripheral *)peripheral option:(BLEConnectPeripheralOption*)option complete:(void (^)(NSError *))complete
+- (void)connectPeripheral:(BLEPeripheral *)peripheral option:(BLEPeripheralConnectOption*)option complete:(void (^)(NSString *))complete
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     if(option.notifyOption & BLEConnectPeripheralOptionNotifyOnConnection)
@@ -71,13 +87,30 @@
     if(option.notifyOption & BLEConnectPeripheralOptionNotifyOnNotification)
         dictionary[CBConnectPeripheralOptionNotifyOnNotificationKey] = @(YES);
     
-    if(complete)
-        self.connectCompletes[peripheral.identifier] = complete;
+    peripheral.connectOption = option;
+    peripheral.connectComplete = complete;
     
-    [self.centralManager connectPeripheral:peripheral options:dictionary];
+    [self.centralManager connectPeripheral:peripheral.peripheral options:dictionary];
 
 }
 
+- (BLEPeripheral*)getCacheBLEPeripheral:(CBPeripheral*)peripheral
+{
+    __block BLEPeripheral *blePeripheral = nil;
+    [self.discoveredPeripherals enumerateObjectsUsingBlock:^(BLEPeripheral * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if(obj.peripheral == peripheral){
+            blePeripheral = obj;
+            *stop = YES;
+        }
+    }];
+    return blePeripheral;
+    
+}
+- (void)cacheBLEPeripheral:(BLEPeripheral*)blePeripheral
+{
+    [self.discoveredPeripherals addObject:blePeripheral];
+}
 
 #pragma mark - CBCentralManagerDelegate
 
@@ -86,20 +119,16 @@
     self.state = (BLEManagerState)central.state;
     if(self.initCentralComplete)
         self.initCentralComplete();
+    
+    [self checkToScan];
 }
 
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *, id> *)advertisementData RSSI:(NSNumber *)RSSI
 {
 
-    BLEPeripheral *blePeripheral = nil;
+    BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     
-    for(BLEPeripheral *p in self.discoveredPeripherals){
-        if(p.peripheral == peripheral){
-            blePeripheral = p;
-            break;
-        }
-    }
     if(!blePeripheral){
         blePeripheral = [BLEPeripheral Peripheral:peripheral];
         [self.discoveredPeripherals addObject:blePeripheral];
@@ -113,31 +142,64 @@
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    ConnectComplete complete = self.connectCompletes[peripheral.identifier.UUIDString];
-    if(complete){
-        complete(nil);
-        self.connectCompletes[peripheral.identifier.UUIDString] = nil;
-    }
+    BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
+    BLEPeripheralConnectOption *option = blePeripheral.connectOption;
+    
+    __block NSString *error = nil;
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        if(option.autoDiscoverServices){
+            
+            error = @"Time Out";
+            dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+            
+            [blePeripheral discoverServices:option.services result:^(NSError *_error) {
+                error = _error.localizedFailureReason;
+                dispatch_semaphore_signal(sema);
+            }];
+            
+            dispatch_time_t timeout = option.discoverServiceTimeout ? DISPATCH_TIME_FOREVER : dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) ;
+            dispatch_semaphore_wait(sema, timeout);
+            
+            if(!error)
+            {
+                for(CBService* service in blePeripheral.services){
+                    [blePeripheral discoverCharacteristics:option.characteristics[service.UUID] forService:service result:^(NSError *_error) {
+                       
+                        error = _error.localizedFailureReason;
+                        dispatch_semaphore_signal(sema);
+
+                    }];
+                    dispatch_time_t timeout = option.discoverServiceTimeout ? DISPATCH_TIME_FOREVER : dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) ;
+                    dispatch_semaphore_wait(sema, timeout);
+                    if(!error)
+                        break;
+                    
+                }
+                
+            }
+            
+        }
+        
+        ConnectComplete complete = blePeripheral.connectComplete;
+        if(complete){
+            complete(error);
+        }
+    });
+   
     
 }
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    ConnectComplete complete = self.connectCompletes[peripheral.identifier.UUIDString];
+    BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
+    ConnectComplete complete = blePeripheral.connectComplete;
+
     if(complete){
-        complete(error);
-        self.connectCompletes[peripheral.identifier.UUIDString] = nil;
+        complete(error.localizedFailureReason);
+        blePeripheral.connectComplete = nil;
     }
 }
 
-#pragma mark - CBPeripheralDelegate
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
-{
-    
-}
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
-{
-    
-}
 @end

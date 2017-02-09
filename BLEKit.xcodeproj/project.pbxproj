@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD911E34B37D00C20189 /* ScanViewController.m */; };
+		5378CD9F1E49DA6800C20189 /* BLEPeripheralConnectOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */; };
+		5378CDA21E49DB1F00C20189 /* BLEPeripheralScanOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */; };
 		53DA39321E30975E00BFE477 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39281E30975E00BFE477 /* AppDelegate.m */; };
 		53DA39331E30975E00BFE477 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53DA39291E30975E00BFE477 /* Assets.xcassets */; };
 		53DA39341E30975E00BFE477 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DA392A1E30975E00BFE477 /* LaunchScreen.storyboard */; };
@@ -21,6 +23,10 @@
 /* Begin PBXFileReference section */
 		5378CD901E34B37D00C20189 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
 		5378CD911E34B37D00C20189 /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
+		5378CD9D1E49DA6800C20189 /* BLEPeripheralConnectOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheralConnectOption.h; sourceTree = "<group>"; };
+		5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheralConnectOption.m; sourceTree = "<group>"; };
+		5378CDA01E49DB1F00C20189 /* BLEPeripheralScanOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheralScanOption.h; sourceTree = "<group>"; };
+		5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheralScanOption.m; sourceTree = "<group>"; };
 		53DA390C1E30969D00BFE477 /* BLEKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53DA39271E30975E00BFE477 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		53DA39281E30975E00BFE477 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -70,6 +76,10 @@
 			children = (
 				53DA39391E309A9B00BFE477 /* BLEPeripheral.h */,
 				53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */,
+				5378CDA01E49DB1F00C20189 /* BLEPeripheralScanOption.h */,
+				5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */,
+				5378CD9D1E49DA6800C20189 /* BLEPeripheralConnectOption.h */,
+				5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */,
 				53DA393C1E30AE4600BFE477 /* BLEManager.h */,
 				53DA393D1E30AE4600BFE477 /* BLEManager.m */,
 				53DA393F1E30DAA800BFE477 /* BLEUtil.h */,
@@ -167,8 +177,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				53DA39411E30DAA800BFE477 /* BLEUtil.m in Sources */,
+				5378CDA21E49DB1F00C20189 /* BLEPeripheralScanOption.m in Sources */,
 				5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */,
 				53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */,
+				5378CD9F1E49DA6800C20189 /* BLEPeripheralConnectOption.m in Sources */,
 				53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */,
 				53DA39371E30975E00BFE477 /* main.m in Sources */,
 				53DA39321E30975E00BFE477 /* AppDelegate.m in Sources */,
@@ -291,7 +303,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X3TFC4EBWV;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LevinYan.BLEKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -304,7 +316,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X3TFC4EBWV;
 				INFOPLIST_FILE = Example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LevinYan.BLEKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";

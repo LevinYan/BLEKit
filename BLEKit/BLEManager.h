@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "BLEPeripheral.h"
-
+#import "BLEPeripheralScanOption.h"
+#import "BLEPeripheralConnectOption.h"
 
 typedef void (^InitCentralComplete)();
 typedef void (^ScanResult)(CBPeripheral *peripheral);
-typedef void (^ConnectComplete)(NSError *error);
 
 typedef NS_ENUM(NSInteger, BLEManagerState) {
     BLEManagerStateUnknown = 0,
@@ -23,36 +23,18 @@ typedef NS_ENUM(NSInteger, BLEManagerState) {
     BLEManagerStatePoweredOn,
 };
 
-typedef NS_ENUM(NSInteger, BLEConnectPeripheralNotifyOption) {
+typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
     
-    BLEConnectPeripheralOptionNotifyNone = 0,
-    BLEConnectPeripheralOptionNotifyOnConnection,
-    BLEConnectPeripheralOptionNotifyOnDisconnection,
-    BLEConnectPeripheralOptionNotifyOnNotification,
-
+    BLEManagerScanStoped = 0,
+    BLEManagerScanWaiting,
+    BLEManagerScaning,
+    
 };
-
-@interface BLEScanPeripheralOption : NSObject
-
-@property (nonatomic, assign) BOOL allowDuplicate;
-@property (nonatomic, strong) NSArray<CBUUID *> *serviceUUIDs;
-
-@end
-
-@interface BLEConnectPeripheralOption : NSObject
-
-@property (nonatomic, assign) BLEConnectPeripheralNotifyOption notifyOption;
-@property (nonatomic, assign) BOOL autoDiscoverServices;
-@property (nonatomic, strong) NSArray<CBUUID*> *services;
-@property (nonatomic, strong) NSDictionary<CBUUID*, NSArray<CBUUID*>*> *characteristics;
-
-@end
-
-
 
 @interface BLEManager : NSObject
 
 @property (nonatomic, assign, readonly) BLEManagerState state;
+@property (nonatomic, assign, readonly) BLEManagerScanState scanState;
 @property (nonatomic, strong, readonly) NSMutableArray<BLEPeripheral*> *discoveredPeripherals;
 
 
@@ -60,10 +42,10 @@ typedef NS_ENUM(NSInteger, BLEConnectPeripheralNotifyOption) {
 
 - (void)initCentral:(InitCentralComplete)complete;
 
-- (void)scanForPeripherals:(BLEScanPeripheralOption*)option result:(ScanResult)result;
+- (void)scanForPeripherals:(BLEPeripheralScanOption*)option result:(ScanResult)result;
 
 - (void)stopScan;
 
-- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEConnectPeripheralOption*)option complete:(ConnectComplete)complete;
+- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
 
 @end
