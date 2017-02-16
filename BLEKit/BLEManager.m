@@ -90,8 +90,12 @@
     peripheral.connectOption = option;
     peripheral.connectComplete = complete;
     
+    
     [self.centralManager connectPeripheral:peripheral.peripheral options:dictionary];
 
+#if DEBUG
+    NSLog(@"connectPeripheral %@", peripheral);
+#endif
 }
 
 - (BLEPeripheral*)getCacheBLEPeripheral:(CBPeripheral*)peripheral
@@ -133,15 +137,18 @@
         blePeripheral = [BLEPeripheral Peripheral:peripheral];
         [self.discoveredPeripherals addObject:blePeripheral];
     }
-    
-    blePeripheral.scanRSSI = RSSI;
-    blePeripheral.advertisementData = advertisementData;
+    [blePeripheral setValue:RSSI forKey:@"RSSI"];
+    [blePeripheral setValue:advertisementData forKey:@"advertisementData"];
     if(self.scanResult)
         self.scanResult(peripheral);
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
+#if DEBUG
+    NSLog(@"didConnectPeripheral %@", peripheral);
+#endif
+    
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     BLEPeripheralConnectOption *option = blePeripheral.connectOption;
     
@@ -154,26 +161,27 @@
             error = @"Time Out";
             dispatch_semaphore_t sema = dispatch_semaphore_create(0);
             
-            [blePeripheral discoverServices:option.services result:^(NSError *_error) {
+            [blePeripheral discoverServices:option.needDiscoveredServices result:^(NSError *_error) {
                 error = _error.localizedFailureReason;
                 dispatch_semaphore_signal(sema);
             }];
             
-            dispatch_time_t timeout = option.discoverServiceTimeout ? DISPATCH_TIME_FOREVER : dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) ;
+            dispatch_time_t timeout = option.discoverServiceTimeout ?   dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) : DISPATCH_TIME_FOREVER;
             dispatch_semaphore_wait(sema, timeout);
             
             if(!error)
             {
                 for(CBService* service in blePeripheral.services){
-                    [blePeripheral discoverCharacteristics:option.characteristics[service.UUID] forService:service result:^(NSError *_error) {
+                   
+                    [blePeripheral discoverCharacteristics:option.needDiscoveredCharacteristics[service.UUID] forService:service result:^(NSError *_error) {
                        
                         error = _error.localizedFailureReason;
                         dispatch_semaphore_signal(sema);
 
                     }];
-                    dispatch_time_t timeout = option.discoverServiceTimeout ? DISPATCH_TIME_FOREVER : dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) ;
+                    dispatch_time_t timeout = option.discoverServiceTimeout ?  dispatch_time(DISPATCH_TIME_NOW, option.discoverServiceTimeout * NSEC_PER_SEC) : DISPATCH_TIME_FOREVER;
                     dispatch_semaphore_wait(sema, timeout);
-                    if(!error)
+                    if(error)
                         break;
                     
                 }
@@ -193,6 +201,9 @@
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
+#if DEBUG
+    NSLog(@"didFailToConnectPeripheral %@", peripheral);
+#endif
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     ConnectComplete complete = blePeripheral.connectComplete;
 

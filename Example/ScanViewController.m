@@ -8,10 +8,12 @@
 
 #import "ScanViewController.h"
 #import "BLEManager.h"
+#import "ConnectViewController.h"
 
 @interface ScanViewController ()
 
 @property (nonatomic, strong) BLEManager *bleManager;
+@property (nonatomic, assign) NSInteger selectedIndex;
 @end
 
 @implementation ScanViewController
@@ -56,54 +58,33 @@
     
     BLEPeripheral *p = [BLEManager shareManager].discoveredPeripherals[indexPath.row];
     name.text = p.name ?: @"Unknow";
-    rssi.text = [NSString stringWithFormat:@"%@", p.scanRSSI];
+    rssi.text = [NSString stringWithFormat:@"%@", p.RSSI];
     
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedIndex = indexPath.row;
+    return indexPath;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    [self.bleManager connectPeripheral:self.bleManager.discoveredPeripherals[indexPath.row] option:[BLEPeripheralConnectOption defaultOption] complete:^(NSString *error) {
+        
+    }];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+   
+    ConnectViewController *vc = segue.destinationViewController;
+    [vc view];
+    vc.peripheral = self.bleManager.discoveredPeripherals[self.selectedIndex];
 }
-*/
+
 
 @end

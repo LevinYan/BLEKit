@@ -21,10 +21,12 @@ typedef NS_ENUM(NSInteger, BLEPeripheralConnectNotifyOption) {
 @interface BLEPeripheralConnectOption : NSObject
 
 @property (nonatomic, assign) BLEPeripheralConnectNotifyOption notifyOption;
+@property (nonatomic, assign) BOOL autoReconnect;
 @property (nonatomic, assign) float connectTimeout;
 @property (nonatomic, assign) float discoverServiceTimeout;
 @property (nonatomic, assign) BOOL autoDiscoverServices;
-@property (nonatomic, strong) NSArray<CBUUID*> *services;
-@property (nonatomic, strong) NSDictionary<CBUUID*, NSArray<CBUUID*>*> *characteristics;
+@property (nonatomic, strong) NSArray<CBUUID*> *needDiscoveredServices;
+@property (nonatomic, strong) NSDictionary<CBUUID*, NSArray<CBUUID*>*> *needDiscoveredCharacteristics;
 
++ (instancetype)defaultOption;
 @end

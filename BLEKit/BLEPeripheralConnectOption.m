@@ -10,4 +10,15 @@
 
 @implementation BLEPeripheralConnectOption
 
++ (instancetype)defaultOption
+{
+    BLEPeripheralConnectOption *option = [[[self class] alloc] init];
+    option.notifyOption = BLEConnectPeripheralOptionNotifyNone;
+    option.connectTimeout = 0;
+    option.autoDiscoverServices = YES;
+    option.needDiscoveredServices = nil;
+    option.needDiscoveredCharacteristics = nil;
+    option.autoReconnect = NO;
+    return option;
+}
 @end
