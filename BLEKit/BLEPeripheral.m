@@ -6,11 +6,16 @@
 //  Copyright © 2017年 LevinYan. All rights reserved.
 //
 
+#import "BLEManager.h"
 #import "BLEPeripheral.h"
 
 
 
+@interface BLEManager(BLEPeripheral)
 
+- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
+
+@end
 
 @interface BLEPeripheral()<CBPeripheralDelegate>
 
@@ -27,21 +32,27 @@
 @implementation BLEPeripheral
 
 
-+ (instancetype)Peripheral:(CBPeripheral*)peripheral
++ (instancetype)Peripheral:(CBPeripheral*)peripheral bleManager:(BLEManager*)bleManager
 {
     BLEPeripheral *blePeripheral = [BLEPeripheral new];
-    [blePeripheral init:peripheral];
+
+    [blePeripheral init:peripheral bleManager:bleManager];
     return blePeripheral;
 }
 
-- (void)init:(CBPeripheral*)peripheral
+- (void)init:(CBPeripheral*)peripheral bleManager:(BLEManager*)bleManager
 {
+    _bleManager = bleManager;
     _peripheral = peripheral;
     [_peripheral addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial context:nil];
     [_peripheral addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial context:nil];
     
 }
 
+- (void)connectWithOption:(BLEPeripheralConnectOption *)option complete:(ConnectComplete)complete
+{
+    [self.bleManager connectPeripheral:self option:option complete:complete];
+}
 - (NSArray<CBService*>*)services
 {
     return self.peripheral.services;

@@ -71,9 +71,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    [self.bleManager connectPeripheral:self.bleManager.discoveredPeripherals[indexPath.row] option:[BLEPeripheralConnectOption defaultOption] complete:^(NSString *error) {
-        
-    }];
+    
 }
 
 #pragma mark - Navigation

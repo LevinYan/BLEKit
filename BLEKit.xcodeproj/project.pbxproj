@@ -12,6 +12,7 @@
 		5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD911E34B37D00C20189 /* ScanViewController.m */; };
 		5378CD9F1E49DA6800C20189 /* BLEPeripheralConnectOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */; };
 		5378CDA21E49DB1F00C20189 /* BLEPeripheralScanOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */; };
+		53B60E811E55940900F9D265 /* CharacteristicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B60E801E55940900F9D265 /* CharacteristicViewController.m */; };
 		53DA39321E30975E00BFE477 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39281E30975E00BFE477 /* AppDelegate.m */; };
 		53DA39331E30975E00BFE477 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53DA39291E30975E00BFE477 /* Assets.xcassets */; };
 		53DA39341E30975E00BFE477 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53DA392A1E30975E00BFE477 /* LaunchScreen.storyboard */; };
@@ -34,6 +35,8 @@
 		5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheralConnectOption.m; sourceTree = "<group>"; };
 		5378CDA01E49DB1F00C20189 /* BLEPeripheralScanOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheralScanOption.h; sourceTree = "<group>"; };
 		5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheralScanOption.m; sourceTree = "<group>"; };
+		53B60E7F1E55940900F9D265 /* CharacteristicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacteristicViewController.h; sourceTree = "<group>"; };
+		53B60E801E55940900F9D265 /* CharacteristicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacteristicViewController.m; sourceTree = "<group>"; };
 		53DA390C1E30969D00BFE477 /* BLEKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53DA39271E30975E00BFE477 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		53DA39281E30975E00BFE477 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -123,6 +126,8 @@
 				5378CD911E34B37D00C20189 /* ScanViewController.m */,
 				535D46D61E4DAA2900B9A183 /* ConnectViewController.h */,
 				535D46D71E4DAA2900B9A183 /* ConnectViewController.m */,
+				53B60E7F1E55940900F9D265 /* CharacteristicViewController.h */,
+				53B60E801E55940900F9D265 /* CharacteristicViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -267,6 +272,7 @@
 				535D46D81E4DAA2900B9A183 /* ConnectViewController.m in Sources */,
 				5378CD9F1E49DA6800C20189 /* BLEPeripheralConnectOption.m in Sources */,
 				53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */,
+				53B60E811E55940900F9D265 /* CharacteristicViewController.m in Sources */,
 				53DA39371E30975E00BFE477 /* main.m in Sources */,
 				53DA39321E30975E00BFE477 /* AppDelegate.m in Sources */,
 			);

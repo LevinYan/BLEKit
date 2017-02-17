@@ -46,6 +46,5 @@ typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
 
 - (void)stopScan;
 
-- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
 
 @end

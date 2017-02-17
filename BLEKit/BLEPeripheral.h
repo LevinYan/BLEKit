@@ -10,6 +10,8 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BLEPeripheralConnectOption.h"
 
+@class BLEManager;
+
 typedef NS_ENUM(NSInteger, BLEPeripheralState) {
     BLEPeripheralStateDisconnected = 0,
     BLEPeripheralStateConnecting,
@@ -26,6 +28,7 @@ typedef void (^ReadCharacteristicResult)(NSData* value, NSError *error);
 
 @interface BLEPeripheral : NSObject
 
+@property (nonatomic, weak,   readonly) BLEManager *bleManager;
 @property (nonatomic, strong, readonly) NSString* name;
 @property (nonatomic, assign, readonly) BLEPeripheralState state;
 @property (nonatomic, assign, readonly) NSUUID *identifier;
@@ -35,6 +38,8 @@ typedef void (^ReadCharacteristicResult)(NSData* value, NSError *error);
 @property (nonatomic, strong) BLEPeripheralConnectOption *connectOption;
 @property (nonatomic, copy)   ConnectComplete connectComplete;
 
+
+- (void)connectWithOption:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
 
 - (void)discoverServices:(NSArray<CBUUID *> *)serviceUUIDs result:(DiscoverServicesResult)result;
 - (void)discoverCharacteristics:(NSArray<CBUUID *> *)characteristicUUIDs forService:(CBService *)service result:(DiscoverCharacteristicsResult)result;

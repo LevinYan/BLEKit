@@ -14,7 +14,7 @@
 @interface BLEPeripheral(BLEManager)
 
 @property (nonatomic, strong) CBPeripheral *peripheral;
-+ (instancetype)Peripheral:(CBPeripheral*)peripheral;
++ (instancetype)Peripheral:(CBPeripheral*)peripheral bleManager:(BLEManager*)bleManager;
 
 @end
 
@@ -134,7 +134,7 @@
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     
     if(!blePeripheral){
-        blePeripheral = [BLEPeripheral Peripheral:peripheral];
+        blePeripheral = [BLEPeripheral Peripheral:peripheral bleManager:self];
         [self.discoveredPeripherals addObject:blePeripheral];
     }
     [blePeripheral setValue:RSSI forKey:@"RSSI"];
@@ -192,13 +192,21 @@
         
         ConnectComplete complete = blePeripheral.connectComplete;
         if(complete){
-            complete(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complete(error);
+            });
         }
     });
    
     
 }
 
+- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
+{
+#if DEBUG
+    NSLog(@"didDisconnectPeripheral %@ %@", peripheral);
+#endif
+}
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
 #if DEBUG
