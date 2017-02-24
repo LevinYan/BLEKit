@@ -25,6 +25,8 @@ typedef void (^DiscoverServicesResult)(NSError *error);
 typedef void (^DiscoverCharacteristicsResult)(NSError *error);
 typedef void (^WriteCharacteristicResult)(NSError *error);
 typedef void (^ReadCharacteristicResult)(NSData* value, NSError *error);
+typedef void (^ListenNotificationResult)(NSData* value, NSError *error);
+typedef void (^StopNotificationResult)(NSError *error);
 
 @interface BLEPeripheral : NSObject
 
@@ -38,12 +40,19 @@ typedef void (^ReadCharacteristicResult)(NSData* value, NSError *error);
 @property (nonatomic, strong) BLEPeripheralConnectOption *connectOption;
 @property (nonatomic, copy)   ConnectComplete connectComplete;
 
+- (void)connectWithOption:(nullable BLEPeripheralConnectOption*)option complete:(nullable ConnectComplete)complete;
 
-- (void)connectWithOption:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
+- (void)discoverServices:(nullable NSArray<CBUUID *> *)serviceUUIDs result:(nullable DiscoverServicesResult)result;
 
-- (void)discoverServices:(NSArray<CBUUID *> *)serviceUUIDs result:(DiscoverServicesResult)result;
-- (void)discoverCharacteristics:(NSArray<CBUUID *> *)characteristicUUIDs forService:(CBService *)service result:(DiscoverCharacteristicsResult)result;
-- (void)writeValue:(NSData*)value forCharacteristic:(nonnull CBCharacteristic *)characteristic result:(nullable WriteCharacteristicResult)result;
+- (void)discoverCharacteristics:(nullable NSArray<CBUUID *> *)characteristicUUIDs forService:(nonnull CBService *)service result:(nullable DiscoverCharacteristicsResult)result;
+
+- (void)writeValue:(nonnull NSData*)value forCharacteristic:(nonnull CBCharacteristic *)characteristic result:(nullable WriteCharacteristicResult)result;
+
 - (void)readValueForCharacteristic:(nonnull CBCharacteristic *)characteristic result:(nullable ReadCharacteristicResult)result;
+
+- (void)listenNotificationForCharacteristic:(nonnull CBCharacteristic*)characteristic result:(nullable ListenNotificationResult)result;
+
+- (void)stopNotificationForCharacteristic:(nonnull CBCharacteristic*)characteristic result:(nullable StopNotificationResult)result;
+
 
 @end

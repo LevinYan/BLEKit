@@ -26,6 +26,8 @@
 @property (nonatomic, copy) DiscoverCharacteristicsResult discoverCharacteristicsResult;
 @property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableArray<WriteCharacteristicResult>*> *writeCharacteristicResults;
 @property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableArray<ReadCharacteristicResult>*> *readCharacteristicResults;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableArray<ListenNotificationResult>*> *listenNotificationResults;
+@property (nonatomic, copy) NSMutableDictionary<NSString*, StopNotificationResult>*stopNotifcationResults;
 
 @end
 
@@ -48,6 +50,9 @@
     [_peripheral addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial context:nil];
     
 }
+
+
+
 
 - (void)connectWithOption:(BLEPeripheralConnectOption *)option complete:(ConnectComplete)complete
 {
@@ -113,8 +118,26 @@
     [self.peripheral readValueForCharacteristic:characteristic];
 }
 
+
+- (void)listenNotificationForCharacteristic:(CBCharacteristic *)characteristic result:(ListenNotificationResult)result
+{
+    [self.peripheral setNotifyValue:YES forCharacteristic:characteristic];
+
+}
+
+- (void)stopNotificationForCharacteristic:(CBCharacteristic *)characteristic result:(StopNotificationResult)result
+{
+    self.stopNotifcationResults[characteristic.UUID.UUIDString] = result;
+    [self.peripheral setNotifyValue:NO forCharacteristic:characteristic];
+    [[self getListenNotificationResults:characteristic] removeAllObjects];
+}
+
 - (NSMutableArray<ReadCharacteristicResult>*)getReadCharacteristicResults:(CBCharacteristic*)characteristic
 {
+
+    if(!_readCharacteristicResults)
+        _readCharacteristicResults = [NSMutableDictionary dictionary];
+    
     NSMutableArray<ReadCharacteristicResult>* results = self.readCharacteristicResults[characteristic.UUID.UUIDString];
     if(!results){
         results = [NSMutableArray array];
@@ -124,12 +147,35 @@
 }
 - (NSMutableArray<WriteCharacteristicResult>*)getWriteCharacteristicResults:(CBCharacteristic*)characteristic
 {
+    if(_writeCharacteristicResults)
+        _writeCharacteristicResults = [NSMutableDictionary dictionary];
+
     NSMutableArray<WriteCharacteristicResult>* results = self.writeCharacteristicResults[characteristic.UUID.UUIDString];
     if(!results){
         results = [NSMutableArray array];
         self.writeCharacteristicResults[characteristic.UUID.UUIDString] = results;
     }
     return results;
+}
+
+- (NSMutableArray<ListenNotificationResult>*)getListenNotificationResults:(CBCharacteristic*)characteristic
+{
+    if(_listenNotificationResults)
+        _listenNotificationResults = [NSMutableDictionary dictionary];
+    
+     NSMutableArray<ListenNotificationResult>* results = self.listenNotificationResults[characteristic.UUID.UUIDString];
+    if(!results){
+        results = [NSMutableArray array];
+        self.listenNotificationResults[characteristic.UUID.UUIDString] = results;
+    }
+    return results;
+}
+
+- (NSMutableDictionary<NSString*, StopNotificationResult>*)stopNotifcationResults
+{
+    if(!_stopNotifcationResults)
+        _stopNotifcationResults = [NSMutableDictionary dictionary];
+    return _stopNotifcationResults;
 }
 #pragma mark - CBPeripheralDelegate
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error
@@ -174,6 +220,19 @@
     if(result){
         result(characteristic.value, error);
         [[self getReadCharacteristicResults:characteristic] removeObjectAtIndex:0];
+    }
+    
+    ListenNotificationResult notificationResult = [self getListenNotificationResults:characteristic].firstObject;
+    if(notificationResult){
+        notificationResult(characteristic.value, error);
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
+{
+    if(!characteristic.isNotifying && self.stopNotifcationResults[characteristic.UUID.UUIDString])
+    {
+        self.stopNotifcationResults[characteristic.UUID.UUIDString](error);
     }
 }
 

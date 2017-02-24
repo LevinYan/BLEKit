@@ -9,6 +9,11 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BLEManager.h"
 
+NSString *const kBLEPeripheralConnectedNotificationKey =
+@"BLEPeripheralConnectedNotificationKey";
+
+NSString *const kBLEPeripheralDisconnectedNotificationKey =
+@"BLEPeripheralDisconnectedNotificationKey";
 
 
 @interface BLEPeripheral(BLEManager)
@@ -45,6 +50,7 @@
     self = [super init];
     _state = BLEManagerStateUnknown;
     _discoveredPeripherals = [NSMutableArray array];
+    _localConnectedPeripherals = [NSMutableArray array];
     return self;
 
 }
@@ -55,6 +61,19 @@
     _initCentralComplete = complete;
     
 }
+
+- (NSArray<BLEPeripheral*>*)retrieveAllConnectedPeripheralsWithServices:(NSArray<CBUUID *> *)serviceUUIDs
+{
+    NSArray<CBPeripheral*> *connectedPeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];
+    NSMutableArray *blePeripherals = [NSMutableArray array];
+    for(CBPeripheral *p in connectedPeripherals){
+        [blePeripherals addObject:[BLEPeripheral Peripheral:p bleManager:self]];
+    }
+    
+    return [NSArray arrayWithArray:blePeripherals];
+}
+
+
 - (void)scanForPeripherals:(BLEPeripheralScanOption *)option result:(ScanResult)result
 {
     self.scanState = BLEManagerScanWaiting;
@@ -148,6 +167,7 @@
 #if DEBUG
     NSLog(@"didConnectPeripheral %@", peripheral);
 #endif
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralConnectedNotificationKey object:peripheral];
     
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     BLEPeripheralConnectOption *option = blePeripheral.connectOption;
@@ -203,8 +223,10 @@
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralDisconnectedNotificationKey object:peripheral];
+
 #if DEBUG
-    NSLog(@"didDisconnectPeripheral %@ %@", peripheral);
+    NSLog(@"didDisconnectPeripheral %@ %@", peripheral, error ?: @"success");
 #endif
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error

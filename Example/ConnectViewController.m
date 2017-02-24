@@ -123,6 +123,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
    
     CharacteristicViewController *vc = segue.destinationViewController;
+    vc.peripheral = self.peripheral;
     vc.characteristic = self.peripheral.services[self.selectedIndexPath.section].characteristics[self.selectedIndexPath.row];
 }
 

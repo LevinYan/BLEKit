@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "BLEPeripheral.h"
+
 @interface CharacteristicViewController : UITableViewController
 
+@property (nonatomic, strong) BLEPeripheral *peripheral;
 @property (nonatomic, strong) CBCharacteristic *characteristic;
 @end

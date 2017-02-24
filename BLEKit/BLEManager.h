@@ -11,6 +11,9 @@
 #import "BLEPeripheralScanOption.h"
 #import "BLEPeripheralConnectOption.h"
 
+extern NSString *const kBLEPeripheralConnectedNotificationKey;
+extern NSString *const kBLEPeripheralDisconnectedNotificationKey;
+
 typedef void (^InitCentralComplete)();
 typedef void (^ScanResult)(CBPeripheral *peripheral);
 
@@ -36,7 +39,7 @@ typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
 @property (nonatomic, assign, readonly) BLEManagerState state;
 @property (nonatomic, assign, readonly) BLEManagerScanState scanState;
 @property (nonatomic, strong, readonly) NSMutableArray<BLEPeripheral*> *discoveredPeripherals;
-
+@property (nonatomic, strong, readonly) NSMutableArray<BLEPeripheral*> *localConnectedPeripherals;
 
 + (instancetype)shareManager;
 
@@ -45,6 +48,8 @@ typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
 - (void)scanForPeripherals:(BLEPeripheralScanOption*)option result:(ScanResult)result;
 
 - (void)stopScan;
+
+- (NSArray<BLEPeripheral *> *)retrieveAllConnectedPeripheralsWithServices:(NSArray<CBUUID *> *)serviceUUIDs;
 
 
 @end
