@@ -10,4 +10,12 @@
 
 @implementation BLEPeripheralScanOption
 
++ (instancetype)defaultOption
+{
+    BLEPeripheralScanOption *option = [BLEPeripheralScanOption new];
+    option.allowDuplicate = YES;
+    option.serviceUUIDs = nil;
+    return option;
+}
+
 @end

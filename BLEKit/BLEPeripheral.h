@@ -19,28 +19,28 @@ typedef NS_ENUM(NSInteger, BLEPeripheralState) {
     BLEPeripheralStateDisconnecting
 };
 
-typedef void (^ConnectComplete)(NSString *error);
+typedef void (^ConnectComplete)( NSString * _Nullable error);
 
-typedef void (^DiscoverServicesResult)(NSError *error);
-typedef void (^DiscoverCharacteristicsResult)(NSError *error);
-typedef void (^WriteCharacteristicResult)(NSError *error);
-typedef void (^ReadCharacteristicResult)(NSData* value, NSError *error);
-typedef void (^ListenNotificationResult)(NSData* value, NSError *error);
-typedef void (^StopNotificationResult)(NSError *error);
+typedef void (^DiscoverServicesResult)(NSError * _Nullable error);
+typedef void (^DiscoverCharacteristicsResult)(NSError * _Nullable error);
+typedef void (^WriteCharacteristicResult)(NSError * _Nullable error);
+typedef void (^ReadCharacteristicResult)(NSData* _Nullable value, NSError * _Nullable error);
+typedef void (^ListenNotificationResult)(NSData* _Nullable value, NSError * _Nullable error);
+typedef void (^StopNotificationResult)(NSError * _Nullable error);
 
 @interface BLEPeripheral : NSObject
 
-@property (nonatomic, weak,   readonly) BLEManager *bleManager;
-@property (nonatomic, strong, readonly) NSString* name;
-@property (nonatomic, assign, readonly) BLEPeripheralState state;
-@property (nonatomic, assign, readonly) NSUUID *identifier;
-@property (nonatomic, strong, readonly) NSArray<CBService*> *services;
-@property (nonatomic, strong, readonly) NSNumber *RSSI;
-@property (nonatomic, strong, readonly) NSDictionary<NSString *, id> *advertisementData;
-@property (nonatomic, strong) BLEPeripheralConnectOption *connectOption;
-@property (nonatomic, copy)   ConnectComplete connectComplete;
+@property (nonatomic, weak,   readonly, nullable) BLEManager * bleManager;
+@property (nonatomic, strong, readonly, nullable) NSString* name;
+@property (nonatomic, assign, readonly)           BLEPeripheralState state;
+@property (nonatomic, assign, readonly, nullable) NSUUID *identifier;
+@property (nonatomic, strong, readonly, nullable) NSArray<CBService*> *services;
+@property (nonatomic, strong, readonly, nullable) NSNumber *RSSI;
+@property (nonatomic, strong, readonly, nullable) NSDictionary<NSString *, id> *advertisementData;
+@property (nonatomic, strong, nullable) BLEPeripheralConnectOption *connectOption;
+@property (nonatomic, copy, nullable)   ConnectComplete connectComplete;
 
-- (void)connectWithOption:(nullable BLEPeripheralConnectOption*)option complete:(nullable ConnectComplete)complete;
+
 
 - (void)discoverServices:(nullable NSArray<CBUUID *> *)serviceUUIDs result:(nullable DiscoverServicesResult)result;
 

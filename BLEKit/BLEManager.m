@@ -28,7 +28,6 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 
 @property (nonatomic, assign) BLEManagerState state;
 @property (nonatomic, assign) BLEManagerScanState scanState;
-@property (nonatomic, strong) BLEPeripheralScanOption *scanOption;
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, copy) ScanResult scanResult;
 @property (nonatomic, copy) InitCentralComplete initCentralComplete;
@@ -76,8 +75,10 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 
 - (void)scanForPeripherals:(BLEPeripheralScanOption *)option result:(ScanResult)result
 {
+    self.scanOption = option ?: [BLEPeripheralScanOption defaultOption];
     self.scanState = BLEManagerScanWaiting;
     self.scanResult = result;
+    [self checkToScan];
     
 }
 - (void)checkToScan
@@ -115,6 +116,11 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 #if DEBUG
     NSLog(@"connectPeripheral %@", peripheral);
 #endif
+}
+
+- (void)cancelConnectPeripheral:(BLEPeripheral *)peripheral
+{
+    [self.centralManager cancelPeripheralConnection:peripheral.peripheral];
 }
 
 - (BLEPeripheral*)getCacheBLEPeripheral:(CBPeripheral*)peripheral
@@ -167,9 +173,10 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 #if DEBUG
     NSLog(@"didConnectPeripheral %@", peripheral);
 #endif
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralConnectedNotificationKey object:peripheral];
-    
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralConnectedNotificationKey object:blePeripheral];
+    [self.localConnectedPeripherals addObject:blePeripheral];
+    
     BLEPeripheralConnectOption *option = blePeripheral.connectOption;
     
     __block NSString *error = nil;
@@ -223,11 +230,15 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralDisconnectedNotificationKey object:peripheral];
-
 #if DEBUG
     NSLog(@"didDisconnectPeripheral %@ %@", peripheral, error ?: @"success");
 #endif
+    
+    BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralDisconnectedNotificationKey object:blePeripheral];
+    [self.localConnectedPeripherals removeObject:blePeripheral];
+
+
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {

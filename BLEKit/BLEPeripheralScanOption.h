@@ -14,4 +14,7 @@
 @property (nonatomic, assign) BOOL allowDuplicate;
 @property (nonatomic, strong) NSArray<CBUUID *> *serviceUUIDs;
 
++ (instancetype)defaultOption;
+
 @end
+

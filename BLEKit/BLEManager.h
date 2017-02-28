@@ -37,9 +37,14 @@ typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
 @interface BLEManager : NSObject
 
 @property (nonatomic, assign, readonly) BLEManagerState state;
+
 @property (nonatomic, assign, readonly) BLEManagerScanState scanState;
+
 @property (nonatomic, strong, readonly) NSMutableArray<BLEPeripheral*> *discoveredPeripherals;
+
 @property (nonatomic, strong, readonly) NSMutableArray<BLEPeripheral*> *localConnectedPeripherals;
+
+@property (nonatomic, strong) BLEPeripheralScanOption *scanOption;
 
 + (instancetype)shareManager;
 
@@ -48,6 +53,11 @@ typedef NS_ENUM(NSUInteger, BLEManagerScanState) {
 - (void)scanForPeripherals:(BLEPeripheralScanOption*)option result:(ScanResult)result;
 
 - (void)stopScan;
+
+- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
+
+- (void)cancelConnectPeripheral:(BLEPeripheral*)peripheral;
+
 
 - (NSArray<BLEPeripheral *> *)retrieveAllConnectedPeripheralsWithServices:(NSArray<CBUUID *> *)serviceUUIDs;
 

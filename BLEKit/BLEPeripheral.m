@@ -13,7 +13,6 @@
 
 @interface BLEManager(BLEPeripheral)
 
-- (void)connectPeripheral:(BLEPeripheral*)peripheral option:(BLEPeripheralConnectOption*)option complete:(ConnectComplete)complete;
 
 @end
 
@@ -54,10 +53,7 @@
 
 
 
-- (void)connectWithOption:(BLEPeripheralConnectOption *)option complete:(ConnectComplete)complete
-{
-    [self.bleManager connectPeripheral:self option:option complete:complete];
-}
+
 - (NSArray<CBService*>*)services
 {
     return self.peripheral.services;
@@ -95,14 +91,30 @@
 #ifdef DEBUG
     NSLog(@"peripheral %@, writeValue %@ forCharacteristic %@", self.peripheral, value, characteristic.UUID.UUIDString);
 #endif
-    if(result && (characteristic.properties & CBCharacteristicPropertyWrite)){
+    
+
+    if(!result){
         
-        [[self getWriteCharacteristicResults:characteristic] addObject:result];
-        [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+        if(characteristic.properties & CBCharacteristicPropertyWriteWithoutResponse){
+            [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithoutResponse];
+        }else{
+            result =  ^(NSError *error){};
+            [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+
+        }
+        
     }else{
-        [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithoutResponse];
-        if(result)
+        
+        if(characteristic.properties & CBCharacteristicPropertyWrite){
+            
+            [[self getWriteCharacteristicResults:characteristic] addObject:result];
+            [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+        }else{
+            
+            [self.peripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithoutResponse];
             result(nil);
+        }
+
     }
 }
 
@@ -121,7 +133,9 @@
 
 - (void)listenNotificationForCharacteristic:(CBCharacteristic *)characteristic result:(ListenNotificationResult)result
 {
+    [[self getListenNotificationResults:characteristic] addObject:result];
     [self.peripheral setNotifyValue:YES forCharacteristic:characteristic];
+    
 
 }
 
@@ -147,7 +161,7 @@
 }
 - (NSMutableArray<WriteCharacteristicResult>*)getWriteCharacteristicResults:(CBCharacteristic*)characteristic
 {
-    if(_writeCharacteristicResults)
+    if(!_writeCharacteristicResults)
         _writeCharacteristicResults = [NSMutableDictionary dictionary];
 
     NSMutableArray<WriteCharacteristicResult>* results = self.writeCharacteristicResults[characteristic.UUID.UUIDString];
@@ -160,7 +174,7 @@
 
 - (NSMutableArray<ListenNotificationResult>*)getListenNotificationResults:(CBCharacteristic*)characteristic
 {
-    if(_listenNotificationResults)
+    if(!_listenNotificationResults)
         _listenNotificationResults = [NSMutableDictionary dictionary];
     
      NSMutableArray<ListenNotificationResult>* results = self.listenNotificationResults[characteristic.UUID.UUIDString];
@@ -216,6 +230,10 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
+#ifdef DEBUG
+    NSLog(@"peripheral %@ didUpdateValueForCharacteristic:%@ %@", peripheral, characteristic.UUID.UUIDString, error ? error.localizedFailureReason : characteristic.value);
+#endif
+    
     ReadCharacteristicResult result = [self getReadCharacteristicResults:characteristic].firstObject;
     if(result){
         result(characteristic.value, error);
@@ -230,6 +248,11 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
+    
+#ifdef DEBUG
+    NSLog(@"peripheral %@ didUpdateNotificationStateForCharacteristic:%@ %@", peripheral, characteristic.UUID.UUIDString, error ? error.localizedFailureReason : [NSString stringWithFormat:@"Notification State:%@", characteristic.isNotifying ? @"YES" : @"NO" ]);
+#endif
+    
     if(!characteristic.isNotifying && self.stopNotifcationResults[characteristic.UUID.UUIDString])
     {
         self.stopNotifcationResults[characteristic.UUID.UUIDString](error);

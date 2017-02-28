@@ -35,9 +35,13 @@
     
     __weak typeof(self) wself = self;
 
-    [_peripheral connectWithOption:[BLEPeripheralConnectOption defaultOption] complete:^(NSString *error) {
+    BLEPeripheralConnectOption *option = [BLEPeripheralConnectOption defaultOption];
+    option.needDiscoveredServices = _peripheral.bleManager.scanOption.serviceUUIDs;
+    [_peripheral.bleManager connectPeripheral:_peripheral option:option complete:^(NSString * _Nullable error) {
         [wself.tableView reloadData];
+
     }];
+
     [self.kvoController observe:_peripheral keyPath:@"state" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(id  _Nullable observer, id  _Nonnull object, NSDictionary<NSString *,id> * _Nonnull change) {
         
         [wself updateUI];
@@ -47,8 +51,22 @@
         [wself updateUI];
     }];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnect) name:kBLEPeripheralDisconnectedNotificationKey object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnect) name:kBLEPeripheralConnectedNotificationKey object:nil];
+
 }
 
+- (void)handleDisconnect
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Disconnect Alert" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+- (void)handleConnect
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connect Alert" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    [alertView show];
+
+}
 - (void)updateUI
 {
     NSDictionary *state = @{@(BLEPeripheralStateConnected):@"Connected",
@@ -69,6 +87,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [self.peripheral.bleManager cancelConnectPeripheral:self.peripheral];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -88,6 +110,27 @@
     
     CBCharacteristic *characteristic = self.peripheral.services[indexPath.section].characteristics[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.UUID];
+    
+    NSArray <NSString*> *properties = @[@"Broadcast",
+                                        @"Read",
+                                        @"WriteWithoutResponse",
+                                        @"Write",
+                                        @"Notify",
+                                        @"Indicate",
+                                        @"AuthenticatedSignedWrites",
+                                        @"ExtendedProperties",
+                                        @"NotifyEncryptionRequired",
+                                        @"IndicateEncryptionRequired"];
+
+    NSMutableString *detailString = [NSMutableString string];
+    for(int i = 0; i <= properties.count; i++){
+        
+        if(characteristic.properties & (1 << i)){
+            [detailString appendString:properties[i]];
+            [detailString appendString:@" "];
+        }
+    }
+    cell.detailTextLabel.text = detailString;
     
     return cell;
 }

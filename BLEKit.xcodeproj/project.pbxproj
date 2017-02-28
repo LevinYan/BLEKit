@@ -20,7 +20,6 @@
 		53DA39371E30975E00BFE477 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA392F1E30975E00BFE477 /* main.m */; };
 		53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */; };
 		53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393D1E30AE4600BFE477 /* BLEManager.m */; };
-		53DA39411E30DAA800BFE477 /* BLEUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA39401E30DAA800BFE477 /* BLEUtil.m */; };
 		E842A6655303B114946DAA45 /* libPods-BLEKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF390C15C84767C7034C392 /* libPods-BLEKit.a */; };
 /* End PBXBuildFile section */
 
@@ -49,8 +48,6 @@
 		53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheral.m; sourceTree = "<group>"; };
 		53DA393C1E30AE4600BFE477 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEManager.h; sourceTree = "<group>"; };
 		53DA393D1E30AE4600BFE477 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEManager.m; sourceTree = "<group>"; };
-		53DA393F1E30DAA800BFE477 /* BLEUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEUtil.h; sourceTree = "<group>"; };
-		53DA39401E30DAA800BFE477 /* BLEUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEUtil.m; sourceTree = "<group>"; };
 		DFF390C15C84767C7034C392 /* libPods-BLEKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BLEKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CF21429758D57E18B1FAA0 /* Pods-BLEKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -105,8 +102,6 @@
 				5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */,
 				5378CDA01E49DB1F00C20189 /* BLEPeripheralScanOption.h */,
 				5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */,
-				53DA393F1E30DAA800BFE477 /* BLEUtil.h */,
-				53DA39401E30DAA800BFE477 /* BLEUtil.m */,
 			);
 			path = BLEKit;
 			sourceTree = "<group>";
@@ -265,7 +260,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53DA39411E30DAA800BFE477 /* BLEUtil.m in Sources */,
 				5378CDA21E49DB1F00C20189 /* BLEPeripheralScanOption.m in Sources */,
 				5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */,
 				53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */,

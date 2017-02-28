@@ -25,7 +25,11 @@
     
     [self.bleManager initCentral:nil];
     __weak typeof(self) wself = self;
-    [self.bleManager scanForPeripherals:nil result:^(CBPeripheral *peripheral) {
+   
+    BLEPeripheralScanOption *scanOption = [BLEPeripheralScanOption new];
+    scanOption.allowDuplicate = YES;
+    scanOption.serviceUUIDs = @[[CBUUID UUIDWithString:@"1802"]];
+    [self.bleManager scanForPeripherals:scanOption result:^(CBPeripheral *peripheral) {
         [wself.tableView reloadData];
     }];
 

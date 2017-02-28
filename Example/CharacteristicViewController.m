@@ -7,7 +7,7 @@
 //
 
 #import "CharacteristicViewController.h"
-
+#import "BLEManager.h"
 
 @interface BLEData : NSObject
 
@@ -30,7 +30,15 @@
 
 - (NSString*)stringValue
 {
-    return [NSString stringWithFormat:@"0X%@",[[NSString alloc] initWithData:self.value encoding:NSUTF8StringEncoding]];
+    
+    NSMutableString *encodeValue = [NSMutableString string];
+    [encodeValue appendString:@"0X"];
+    UInt8 *bytes = (UInt8*)self.value.bytes;
+    for(int i = 0; i < self.value.length; i++){
+        [encodeValue appendString:[NSString stringWithFormat:@"%x%x",((bytes[i] >> 4) & 0x0F), (bytes[i] & 0x0F)]];
+    }
+    
+    return encodeValue;
 }
 
 - (NSString*)stringDate
@@ -49,6 +57,7 @@ static NSString *const NotifySection = @"Start Notification";
 
 @interface CharacteristicViewController ()
 
+@property (nonatomic, strong) UITextField *textField;
 @property (weak, nonatomic) IBOutlet UILabel *uuid;
 @property (weak, nonatomic) IBOutlet UILabel *properties;
 @property (nonatomic, strong) NSMutableArray<NSString*> *sections;
@@ -89,7 +98,7 @@ static NSString *const NotifySection = @"Start Notification";
     {
         if(self.characteristic.properties & key.unsignedIntegerValue){
             
-            if(propertiesDic.count)
+            if(properties.length)
                 [properties appendString:@"\n"];
             [properties appendString:propertiesDic[key]];
         }
@@ -158,7 +167,14 @@ static NSString *const NotifySection = @"Start Notification";
     button.backgroundColor = [UIColor colorWithRed:27/255.f green:128/255.f blue:216/255.f alpha:0.9];
     button.clipsToBounds = YES;
     button.layer.cornerRadius = 4;
-    [button setTitle:self.sections[section] forState:UIControlStateNormal];
+    if([self.sections[section] isEqualToString:NotifySection]){
+        if(self.characteristic.isNotifying)
+            [button setTitle:@"Stop Notification" forState:UIControlStateNormal];
+        else
+            [button setTitle:@"Start Notification" forState:UIControlStateNormal];
+    }else{
+        [button setTitle:self.sections[section] forState:UIControlStateNormal];
+    }
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:16];
     button.tag = section;
@@ -192,35 +208,78 @@ static NSString *const NotifySection = @"Start Notification";
 }
 - (void)handleWriteClicked:(UIButton*)button
 {
-    UIView *maskView = [[UIView alloc] initWithFrame:self.view.bounds];
+    UIView *maskView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [maskView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(maskViewTap:)]];
     maskView.backgroundColor = [UIColor blackColor];
-    maskView.alpha = 0.7;
-    UITextField *textFiled = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    textFiled.backgroundColor = [UIColor whiteColor];
-    textFiled.clipsToBounds = YES;
-    textFiled.layer.cornerRadius = 4;
-    textFiled.layer.borderColor = [UIColor blackColor].CGColor;
-    textFiled.layer.borderWidth = 0.5;
-    textFiled.center = self.view.center;
-    [maskView addSubview:textFiled];
+    maskView.alpha = 0.8;
+    self.textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    self.textField.backgroundColor = [UIColor whiteColor];
+    self.textField.clipsToBounds = YES;
+    self.textField.layer.cornerRadius = 4;
+    self.textField.layer.borderColor = [UIColor blackColor].CGColor;
+    self.textField.layer.borderWidth = 0.5;
+    CGPoint center = self.view.center;
+    center.y -= 60;
+    self.textField.center = center;
+    [maskView addSubview:self.textField];
     
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 30)];
-    [button setTitle:@"cancel" forState:UIControlStateNormal];
-    CGPoint center = maskView.center;
-    center.x -= 40;
+    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    [cancelButton setTitle:@"cancel" forState:UIControlStateNormal];
+    cancelButton.backgroundColor = [UIColor colorWithRed:27/255.f green:128/255.f blue:216/255.f alpha:0.9];
+    center = maskView.center;
+    cancelButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    cancelButton.clipsToBounds = YES;
+    cancelButton.layer.cornerRadius = 4;
+    center.x -= 60;
     center.y += 40;
+    cancelButton.center = center;
+    [cancelButton addTarget:self action:@selector(cancelClicked:) forControlEvents:UIControlEventTouchUpInside];
     [maskView addSubview:cancelButton];
     
     
-    UIButton *confirmButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 30)];
+    UIButton *confirmButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    confirmButton.clipsToBounds = YES;
+    confirmButton.layer.cornerRadius = 4;
+    confirmButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [confirmButton setTitle:@"confirm" forState:UIControlStateNormal];
+    confirmButton.backgroundColor = [UIColor colorWithRed:27/255.f green:128/255.f blue:216/255.f alpha:0.9];
+    [confirmButton addTarget:self action:@selector(confirmClicked:) forControlEvents:UIControlEventTouchUpInside];
+
     center = maskView.center;
-    center.x += 40;
+    center.x += 60;
     center.y += 40;
+    confirmButton.center = center;
     [maskView addSubview:confirmButton];
     
+    [self.textField becomeFirstResponder];
     [self.navigationController.view addSubview:maskView];
+}
+
+- (void)cancelClicked:(UIButton*)button
+{
+    [button.superview removeFromSuperview];
+    
+}
+- (void)confirmClicked:(UIButton*)button
+{
+    NSMutableData *data= [[NSMutableData alloc] init];
+    
+    NSMutableString *string = [NSMutableString string];
+    if(self.textField.text.length % 2)
+        [string appendString:@"0"];
+    [string appendString:self.textField.text];
+    
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [string length]/2; i++) {
+        byte_chars[0] = [string characterAtIndex:i*2];
+        byte_chars[1] = [string characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [data appendBytes:&whole_byte length:1];
+    }
+    [self.peripheral writeValue:data forCharacteristic:self.characteristic result:nil];
+    [button.superview removeFromSuperview];
 }
 - (void)maskViewTap:(UITapGestureRecognizer*)gecognizer
 {
