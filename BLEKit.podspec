@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-s.name         = "BLEKit"
+s.name         = "LYBLEKit"
 s.version      = "1.0.0"
 s.summary      = "The package of useful tools, include categories and classes"
 s.license      = "MIT"
