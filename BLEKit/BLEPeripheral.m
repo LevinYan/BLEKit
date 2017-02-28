@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, assign) BLEPeripheralState state;
 @property (nonatomic, strong) CBPeripheral *peripheral;
+@property (nonatomic, copy, nullable)   ConnectComplete connectComplete;
 @property (nonatomic, copy) DiscoverServicesResult discoverServicesResult;
 @property (nonatomic, copy) DiscoverCharacteristicsResult discoverCharacteristicsResult;
 @property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableArray<WriteCharacteristicResult>*> *writeCharacteristicResults;
