@@ -20,6 +20,7 @@
 		53DA39371E30975E00BFE477 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA392F1E30975E00BFE477 /* main.m */; };
 		53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */; };
 		53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393D1E30AE4600BFE477 /* BLEManager.m */; };
+		53F4489C1E6554F00079FF4F /* BLEKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 53F4489B1E6554F00079FF4F /* BLEKit.podspec */; };
 		E842A6655303B114946DAA45 /* libPods-BLEKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF390C15C84767C7034C392 /* libPods-BLEKit.a */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheral.m; sourceTree = "<group>"; };
 		53DA393C1E30AE4600BFE477 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEManager.h; sourceTree = "<group>"; };
 		53DA393D1E30AE4600BFE477 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEManager.m; sourceTree = "<group>"; };
+		53F4489B1E6554F00079FF4F /* BLEKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BLEKit.podspec; sourceTree = "<group>"; };
 		DFF390C15C84767C7034C392 /* libPods-BLEKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BLEKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CF21429758D57E18B1FAA0 /* Pods-BLEKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +77,7 @@
 		53DA39031E30969D00BFE477 = {
 			isa = PBXGroup;
 			children = (
+				53F4489B1E6554F00079FF4F /* BLEKit.podspec */,
 				53DA390E1E30969D00BFE477 /* BLEKit */,
 				53DA39261E30975E00BFE477 /* Example */,
 				53DA390D1E30969D00BFE477 /* Products */,
@@ -198,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53F4489C1E6554F00079FF4F /* BLEKit.podspec in Resources */,
 				53DA39331E30975E00BFE477 /* Assets.xcassets in Resources */,
 				53DA39351E30975E00BFE477 /* Main.storyboard in Resources */,
 				535D473A1E52E00B00B9A183 /* Podfile in Resources */,
