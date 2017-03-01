@@ -36,6 +36,7 @@
     __weak typeof(self) wself = self;
 
     BLEPeripheralConnectOption *option = [BLEPeripheralConnectOption defaultOption];
+    option.autoReconnect = YES;
     option.needDiscoveredServices = _peripheral.bleManager.scanOption.serviceUUIDs;
     [_peripheral.bleManager connectPeripheral:_peripheral option:option complete:^(NSString * _Nullable error) {
         [wself.tableView reloadData];

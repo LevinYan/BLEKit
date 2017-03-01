@@ -19,6 +19,8 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 @interface BLEPeripheral(BLEManager)
 
 @property (nonatomic, strong) CBPeripheral *peripheral;
+@property (nonatomic, copy, nullable)   ConnectComplete connectComplete;
+
 + (instancetype)Peripheral:(CBPeripheral*)peripheral bleManager:(BLEManager*)bleManager;
 
 @end
@@ -31,6 +33,7 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, copy) ScanResult scanResult;
 @property (nonatomic, copy) InitCentralComplete initCentralComplete;
+@property (nonatomic, assign) BOOL cancelConnectMyself;
 @end
 
 @implementation BLEManager
@@ -110,7 +113,7 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
     peripheral.connectOption = option;
     peripheral.connectComplete = complete;
     
-    
+    self.cancelConnectMyself = NO;
     [self.centralManager connectPeripheral:peripheral.peripheral options:dictionary];
 
 #if DEBUG
@@ -120,6 +123,7 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 
 - (void)cancelConnectPeripheral:(BLEPeripheral *)peripheral
 {
+    self.cancelConnectMyself = YES;
     [self.centralManager cancelPeripheralConnection:peripheral.peripheral];
 }
 
@@ -237,7 +241,11 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
     BLEPeripheral *blePeripheral = [self getCacheBLEPeripheral:peripheral];
     [[NSNotificationCenter defaultCenter] postNotificationName:kBLEPeripheralDisconnectedNotificationKey object:blePeripheral];
     [self.localConnectedPeripherals removeObject:blePeripheral];
-
+    
+    if(!self.cancelConnectMyself && blePeripheral.connectOption.autoReconnect){
+        [self connectPeripheral:blePeripheral option:blePeripheral.connectOption complete:nil];
+    }
+    
 
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
