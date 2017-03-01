@@ -87,6 +87,9 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 - (void)checkToScan
 {
     if(self.state == BLEManagerStatePoweredOn && self.scanState == BLEManagerScanWaiting){
+        if(self.scanOption.timeout)
+            [NSTimer scheduledTimerWithTimeInterval:self.scanOption.timeout target:self selector:@selector(stopScan) userInfo:nil repeats:NO];
+        
         [self.centralManager scanForPeripheralsWithServices:self.scanOption.serviceUUIDs options:@{CBCentralManagerScanOptionAllowDuplicatesKey : @(self.scanOption.allowDuplicate)}];
         self.scanState = BLEManagerScaning;
         return;
@@ -98,6 +101,8 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
 {
     [self.centralManager stopScan];
     self.scanState = BLEManagerScanStoped;
+    if(self.scanResult)
+        self.scanResult(nil, YES);
 }
 
 - (void)connectPeripheral:(BLEPeripheral *)peripheral option:(BLEPeripheralConnectOption*)option complete:(void (^)(NSString *))complete
@@ -169,7 +174,7 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
     [blePeripheral setValue:RSSI forKey:@"RSSI"];
     [blePeripheral setValue:advertisementData forKey:@"advertisementData"];
     if(self.scanResult)
-        self.scanResult(peripheral);
+        self.scanResult(peripheral, NO);
 }
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral

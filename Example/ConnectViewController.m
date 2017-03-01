@@ -37,6 +37,7 @@
 
     BLEPeripheralConnectOption *option = [BLEPeripheralConnectOption defaultOption];
     option.autoReconnect = YES;
+    option.autoDiscoverServices = YES;
     [_peripheral.bleManager connectPeripheral:_peripheral option:option complete:^(NSString * _Nullable error) {
         [wself.tableView reloadData];
 

@@ -15,7 +15,7 @@ extern NSString *const kBLEPeripheralConnectedNotificationKey;
 extern NSString *const kBLEPeripheralDisconnectedNotificationKey;
 
 typedef void (^InitCentralComplete)();
-typedef void (^ScanResult)(CBPeripheral *peripheral);
+typedef void (^ScanResult)(CBPeripheral *peripheral, BOOL finished);
 
 typedef NS_ENUM(NSInteger, BLEManagerState) {
     BLEManagerStateUnknown = 0,

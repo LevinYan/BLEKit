@@ -28,8 +28,14 @@
    
     BLEPeripheralScanOption *scanOption = [BLEPeripheralScanOption new];
     scanOption.allowDuplicate = YES;
-    [self.bleManager scanForPeripherals:scanOption result:^(CBPeripheral *peripheral) {
+    scanOption.timeout = 10;
+    [self.bleManager scanForPeripherals:scanOption result:^(CBPeripheral *peripheral, BOOL finished) {
         [wself.tableView reloadData];
+        if(finished)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Scan Fininshed" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
     }];
 
 }
