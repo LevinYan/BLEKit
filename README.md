@@ -1,6 +1,14 @@
 # BLEKit
 BLEKit is a very simple libray for BLE develope in iOS   
 
+##BLEKit has the following advantage
+
+* Very Simple API With Block
+* Support Custom Timeout For Scan and Connection
+* Support Auto Discovery Service
+* Support Auto Reconnect
+
+
 
 #Installation
 ```
@@ -21,8 +29,12 @@ pod 'LYBLEKit', '~> 1.0.0'
     }];
 ```
 ##Connect Peripheral
+
 ```objc
- [self.bleManager connectPeripheral:_peripheral option:nil complete:^(NSString * _Nullable error) {
+    BLEPeripheralConnectOption *option = [BLEPeripheralConnectOption defaultOption];
+    option.autoReconnect = YES; //enable auto reconnect when disconnect
+    option.autoDiscoverServices = YES; //enable auto discovery service when connect
+    [self.bleManager connectPeripheral:peripheral option:nil complete:^(NSString * _Nullable error) {
        do something...
     }];
 ```
@@ -44,3 +56,6 @@ pod 'LYBLEKit', '~> 1.0.0'
            do something...
     }];
 ```
+#Contact Me
+If you have any issue need to contact me, just contact me by QQ:243765379 or email:243765379@qq.com 
+
