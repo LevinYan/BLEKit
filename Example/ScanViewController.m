@@ -33,7 +33,7 @@
         [wself.tableView reloadData];
         if(finished)
         {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Scan Fininshed" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Scan Finished" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
             [alertView show];
         }
     }];

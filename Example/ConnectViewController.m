@@ -12,7 +12,6 @@
 #import "CharacteristicViewController.h"
 @interface ConnectViewController ()
 
-@property (nonatomic, strong) FBKVOController *kvoController;
 @property (weak, nonatomic) IBOutlet UILabel *uuid;
 @property (weak, nonatomic) IBOutlet UILabel *state;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
@@ -26,7 +25,6 @@
     [super viewDidLoad];
     
    
-    self.kvoController = [[FBKVOController alloc] initWithObserver:self retainObserved:NO];
 }
 
 - (void)setPeripheral:(BLEPeripheral *)peripheral
@@ -42,21 +40,17 @@
         [wself.tableView reloadData];
 
     }];
-
-    [self.kvoController observe:_peripheral keyPath:@"state" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(id  _Nullable observer, id  _Nonnull object, NSDictionary<NSString *,id> * _Nonnull change) {
-        
-        [wself updateUI];
-    }];
-    [self.kvoController observe:_peripheral keyPath:@"name" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew block:^(id  _Nullable observer, id  _Nonnull object, NSDictionary<NSString *,id> * _Nonnull change) {
-        
-        [wself updateUI];
-    }];
+    [_peripheral addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial context:nil];
+    [_peripheral addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisconnect) name:kBLEPeripheralDisconnectedNotificationKey object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleConnect) name:kBLEPeripheralConnectedNotificationKey object:nil];
 
 }
-
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    [self updateUI];
+}
 - (void)handleDisconnect
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Disconnect Alert" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
@@ -170,6 +164,7 @@
     vc.peripheral = self.peripheral;
     vc.characteristic = self.peripheral.services[self.selectedIndexPath.section].characteristics[self.selectedIndexPath.row];
 }
+
 
 
 @end
