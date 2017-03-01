@@ -17,7 +17,6 @@
     option.connectTimeout = 0;
     option.autoDiscoverServices = YES;
     option.needDiscoveredServices = nil;
-    option.needDiscoveredCharacteristics = nil;
     option.autoReconnect = NO;
     return option;
 }

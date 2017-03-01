@@ -28,7 +28,6 @@
    
     BLEPeripheralScanOption *scanOption = [BLEPeripheralScanOption new];
     scanOption.allowDuplicate = YES;
-    scanOption.serviceUUIDs = @[[CBUUID UUIDWithString:@"1802"]];
     [self.bleManager scanForPeripherals:scanOption result:^(CBPeripheral *peripheral) {
         [wself.tableView reloadData];
     }];

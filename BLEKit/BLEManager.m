@@ -204,7 +204,7 @@ NSString *const kBLEPeripheralDisconnectedNotificationKey =
             {
                 for(CBService* service in blePeripheral.services){
                    
-                    [blePeripheral discoverCharacteristics:option.needDiscoveredCharacteristics[service.UUID] forService:service result:^(NSError *_error) {
+                    [blePeripheral discoverCharacteristics:nil forService:service result:^(NSError *_error) {
                        
                         error = _error.localizedFailureReason;
                         dispatch_semaphore_signal(sema);

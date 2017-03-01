@@ -52,19 +52,13 @@ typedef NS_ENUM(NSInteger, BLEPeripheralConnectNotifyOption) {
  */
 @property (nonatomic, assign) float discoverServiceTimeout;
 
+
 /*
-    A list of service uuids need to be discovered
-    If the value is nil, all the services will be discovered
+    A list of services need to be discovered and all the characteristics in the services also will be discovered
+    If the value is nil, all services and all the characteristics will be discovered
     Default Value: nil
  */
 @property (nonatomic, strong) NSArray<CBUUID*> *needDiscoveredServices;
-
-/*
-    A list of characteristic uuids in the service need to be discovered
-    If the value is nil, all the characteristics in the service will be discovered
-    Default Value
- */
-@property (nonatomic, strong) NSDictionary<CBUUID*, NSArray<CBUUID*>*> *needDiscoveredCharacteristics;
 
 + (instancetype)defaultOption;
 @end
