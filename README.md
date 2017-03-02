@@ -57,8 +57,8 @@ pod 'LYBLEKit', '~> 1.0.0'
     }];
 ```
 #Run Example
-![](https://github.com/LevinYan/BLEKit/raw/1.png)
-![](https://github.com/LevinYan/BLEKit/tree/master/raw/2.jpeg)
+![](https://github.com/LevinYan/BLEKit/blob/master/raw/2.png)
+![](https://github.com/LevinYan/BLEKit/blob/master/raw/3.png)
 
 #Contact Me
 If you have any issue need to contact me, just contact me by QQ:243765379 or email:243765379@qq.com 
