@@ -22,7 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		33FD684FC3FAB577D5D01273 /* Pods-BLEKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit.debug.xcconfig"; sourceTree = "<group>"; };
 		535D46D61E4DAA2900B9A183 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		535D46D71E4DAA2900B9A183 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
 		5378CD901E34B37D00C20189 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
@@ -45,8 +44,6 @@
 		53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEPeripheral.m; sourceTree = "<group>"; };
 		53DA393C1E30AE4600BFE477 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEManager.h; sourceTree = "<group>"; };
 		53DA393D1E30AE4600BFE477 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEManager.m; sourceTree = "<group>"; };
-		DFF390C15C84767C7034C392 /* libPods-BLEKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BLEKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5CF21429758D57E18B1FAA0 /* Pods-BLEKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +60,6 @@
 		0166FA7AD7FF7EA09CB55A56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DFF390C15C84767C7034C392 /* libPods-BLEKit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -74,7 +70,6 @@
 				53DA390E1E30969D00BFE477 /* BLEKit */,
 				53DA39261E30975E00BFE477 /* Example */,
 				53DA390D1E30969D00BFE477 /* Products */,
-				6349C5A5E07B194302AA17B5 /* Pods */,
 				0166FA7AD7FF7EA09CB55A56 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -120,15 +115,6 @@
 				53B60E801E55940900F9D265 /* CharacteristicViewController.m */,
 			);
 			path = Example;
-			sourceTree = "<group>";
-		};
-		6349C5A5E07B194302AA17B5 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				33FD684FC3FAB577D5D01273 /* Pods-BLEKit.debug.xcconfig */,
-				E5CF21429758D57E18B1FAA0 /* Pods-BLEKit.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
