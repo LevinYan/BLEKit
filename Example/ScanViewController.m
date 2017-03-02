@@ -28,7 +28,6 @@
    
     BLEPeripheralScanOption *scanOption = [BLEPeripheralScanOption new];
     scanOption.allowDuplicate = YES;
-    scanOption.timeout = 10;
     [self.bleManager scanForPeripherals:scanOption result:^(CBPeripheral *peripheral, BOOL finished) {
         [wself.tableView reloadData];
         if(finished)

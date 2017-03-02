@@ -51,7 +51,11 @@
     
 }
 
-
+- (void)dealloc
+{
+    [self.peripheral removeObserver:self forKeyPath:@"name"];
+    [self.peripheral removeObserver:self forKeyPath:@"state"];
+}
 
 
 

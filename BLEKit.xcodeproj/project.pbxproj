@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		535D46D81E4DAA2900B9A183 /* ConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 535D46D71E4DAA2900B9A183 /* ConnectViewController.m */; };
-		535D473A1E52E00B00B9A183 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 535D47391E52E00B00B9A183 /* Podfile */; };
 		5378CD921E34B37D00C20189 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD911E34B37D00C20189 /* ScanViewController.m */; };
 		5378CD9F1E49DA6800C20189 /* BLEPeripheralConnectOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CD9E1E49DA6800C20189 /* BLEPeripheralConnectOption.m */; };
 		5378CDA21E49DB1F00C20189 /* BLEPeripheralScanOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 5378CDA11E49DB1F00C20189 /* BLEPeripheralScanOption.m */; };
@@ -20,14 +19,12 @@
 		53DA39371E30975E00BFE477 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA392F1E30975E00BFE477 /* main.m */; };
 		53DA393B1E309A9B00BFE477 /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393A1E309A9B00BFE477 /* BLEPeripheral.m */; };
 		53DA393E1E30AE4600BFE477 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DA393D1E30AE4600BFE477 /* BLEManager.m */; };
-		E842A6655303B114946DAA45 /* libPods-BLEKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF390C15C84767C7034C392 /* libPods-BLEKit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		33FD684FC3FAB577D5D01273 /* Pods-BLEKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit.debug.xcconfig"; sourceTree = "<group>"; };
 		535D46D61E4DAA2900B9A183 /* ConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectViewController.h; sourceTree = "<group>"; };
 		535D46D71E4DAA2900B9A183 /* ConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectViewController.m; sourceTree = "<group>"; };
-		535D47391E52E00B00B9A183 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5378CD901E34B37D00C20189 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
 		5378CD911E34B37D00C20189 /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
 		5378CD9D1E49DA6800C20189 /* BLEPeripheralConnectOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEPeripheralConnectOption.h; sourceTree = "<group>"; };
@@ -57,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E842A6655303B114946DAA45 /* libPods-BLEKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +105,6 @@
 		53DA39261E30975E00BFE477 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				535D47391E52E00B00B9A183 /* Podfile */,
 				53DA39271E30975E00BFE477 /* AppDelegate.h */,
 				53DA39281E30975E00BFE477 /* AppDelegate.m */,
 				53DA39291E30975E00BFE477 /* Assets.xcassets */,
@@ -143,12 +138,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53DA39231E30969D00BFE477 /* Build configuration list for PBXNativeTarget "BLEKit" */;
 			buildPhases = (
-				9FF220886E8B9DA22A7DB510 /* [CP] Check Pods Manifest.lock */,
 				53DA39081E30969D00BFE477 /* Sources */,
 				53DA39091E30969D00BFE477 /* Frameworks */,
 				53DA390A1E30969D00BFE477 /* Resources */,
-				6D1C0621F61F7F768D449AA4 /* [CP] Embed Pods Frameworks */,
-				0A89D00846E8C18899F700C6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -200,60 +192,11 @@
 			files = (
 				53DA39331E30975E00BFE477 /* Assets.xcassets in Resources */,
 				53DA39351E30975E00BFE477 /* Main.storyboard in Resources */,
-				535D473A1E52E00B00B9A183 /* Podfile in Resources */,
 				53DA39341E30975E00BFE477 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0A89D00846E8C18899F700C6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6D1C0621F61F7F768D449AA4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLEKit/Pods-BLEKit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9FF220886E8B9DA22A7DB510 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		53DA39081E30969D00BFE477 /* Sources */ = {
@@ -384,7 +327,6 @@
 		};
 		53DA39241E30969D00BFE477 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33FD684FC3FAB577D5D01273 /* Pods-BLEKit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X3TFC4EBWV;
@@ -398,7 +340,6 @@
 		};
 		53DA39251E30969D00BFE477 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5CF21429758D57E18B1FAA0 /* Pods-BLEKit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = X3TFC4EBWV;

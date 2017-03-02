@@ -7,7 +7,6 @@
 //
 
 #import "ConnectViewController.h"
-#import <FBKVOController.h>
 #import "BLEManager.h"
 #import "CharacteristicViewController.h"
 @interface ConnectViewController ()
@@ -51,6 +50,8 @@
 {
     [self updateUI];
 }
+
+
 - (void)handleDisconnect
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Disconnect Alert" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
@@ -84,6 +85,9 @@
 
 - (void)dealloc
 {
+    [self.peripheral removeObserver:self forKeyPath:@"state"];
+    [self.peripheral removeObserver:self forKeyPath:@"name"];
+
     [self.peripheral.bleManager cancelConnectPeripheral:self.peripheral];
 }
 #pragma mark - Table view data source
